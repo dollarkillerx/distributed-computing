@@ -1,0 +1,78 @@
+syntax = "proto3";
+package raftpb;
+option go_package = ".;raftpb";
+
+enum EntryType {
+  EntryNormal = 0; // 普通消息
+  EntryConfig = 1; // 配置更新消息
+}
+
+// 消息实体
+message Entry {
+  uint64 Term = 1; // 任期
+  uint64 Index = 2; // 任期logIdx
+  EntryType Type = 3; // 消息类型
+  bytes Data = 4; //  消息体
+}
+
+// 快照
+message Snapshot {
+  uint64 Term = 1; // 任期
+  uint64 index = 2; // 任期logIdx
+  bytes data = 3;//  消息体
+}
+
+enum MessageType {
+  MsgVote = 0; // 投票
+  MsgVoteResp = 1;
+  MsgSnap = 2; // 快照
+  MsgHeartbeat = 3;
+  MsgHeartbeatResp = 4;
+  MsgTimeout = 5;
+  MsgCfg = 6; // update config
+  MsgCfgResp = 7;
+  MsgApp = 8; // 应用
+  MsgAppResp = 9;
+  MsgSync = 10; // Sync log
+  MsgSyncResp = 11;
+}
+
+message Message {
+  // 消息类型
+  MessageType type = 1;
+  // 发送给
+  string  to = 2;
+  // from node
+  string from = 3;
+  // 任期
+  uint64 term = 4;
+  // 用于选举投票时 最新的任期
+  uint64 logTerm = 5;
+  // log index
+  uint64  index = 6;
+  // 当前同步的日志
+  repeated Entry entries = 7;
+  // now log index
+  uint64 commit = 8;
+  //  快照
+  Snapshot snapshot = 9;
+  // 用户回复的消息
+  bool reject = 10;
+  // 拒绝投票的原因
+  uint64 rejectHint = 11;
+  bytes context = 12;
+}
+
+// config
+enum ConfChangeType {
+  ConfChangeAddNode = 0;
+  ConfChangeRemoveNode = 1;
+  ConfChangeUpdateNode = 2;
+  ConfChangeAddLearnerNode = 3; // 添加Leader节点
+}
+
+message ConfChange {
+  ConfChangeType type = 1;
+  string node_id = 3;
+  bytes context = 4;
+}

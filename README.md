@@ -42,5 +42,16 @@ build inverted index
 ![j1](./README/c13.png)
 架构
 ![j1](./README/c14.png)
-OK 我们现在用GO来实现MapReduce wordCount
+
+
+### CAP 
+一致性（Consistency）、可用性（Availability）、分区容错性（Partition tolerance）。CAP 原则指的是，这三个要素最多只能同时实现两点，不可能三者兼顾。
+
+### Raft 分布式一致性协议
+图示 http://thesecretlivesofdata.com/raft/
+![j1](./README/p1.png)
+我们来用Raft实现一个强一致性的分布式MAP
+
+
+
 

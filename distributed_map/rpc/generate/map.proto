@@ -1,0 +1,38 @@
+syntax = "proto3";
+package generate;
+option go_package = ".;generate";
+
+service DistributedMap {
+  // 分布式实现
+  rpc LogSync(LogSyncRequest) returns (Null); // 日志同步Leader调用
+  rpc Submit(Null) returns (Null); // 提交数据
+  rpc RaftSync(Null) returns (RaftSyncResponse); // 当存在严重数据掉队是 同步数据
+  rpc Elections(ElectionsRequest) returns (ElectionsResponse); // 选举
+
+  // 业务逻辑
+  rpc Get(Key) returns (Val);
+  rpc Set(KV) returns (Null);
+}
+
+// 分布式实现
+message LogSyncRequest {
+  repeated KV kv = 1;
+}
+message RaftSyncResponse {
+
+}
+message ElectionsRequest {}
+message ElectionsResponse {}
+
+// 业务逻辑
+message Null {}
+message Key {
+  string key = 1;
+}
+message Val {
+  string val = 2;
+}
+message KV {
+  string key = 1;
+  string val = 2;
+}
