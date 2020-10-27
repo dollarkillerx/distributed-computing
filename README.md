@@ -50,6 +50,7 @@ build inverted index
 ### Raft 分布式一致性协议
 图示 http://thesecretlivesofdata.com/raft/
 ![j1](./README/p1.png)
+
 我们来用Raft实现一个强一致性的分布式MAP
 
 参考文献:
